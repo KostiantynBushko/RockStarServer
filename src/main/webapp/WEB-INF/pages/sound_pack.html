@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <title></title>
+
+    <style>
+        td {
+            border: 1px solid #7fbeff;
+        }
+        table {
+            width: 100%;
+        }
+
+        th {
+            background-color: #0fbbf0;
+        }
+        textarea {
+            width:50%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<p>
+    <b>Name:</b><br>
+    <input type="text" id="name" size="40">
+    <button onclick="getGuitarPackage()">Get sound pack</button>
+</p>
+
+
+<p>
+    <b>Article:</b><br>
+    <input id="article" type="text" size="40">
+</p>
+
+<p>
+    <b>Description:</b><br>
+    <textarea id="description" rows="5"></textarea>
+</p>
+
+
+
+<script>
+    var httpRequest = new XMLHttpRequest();
+    var packageName = "";
+    var packageArticle = "";
+    var packageDescription = "";
+
+    function getGuitarPackage() {
+        httpRequest.open("GET", "/get_sound_pack_by_name?name=" + getUrlVars()["name"],true);
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.send();
+
+        httpRequest.onreadystatechange = function() {
+            if(httpRequest.readyState == 4) {
+                if(httpRequest.status == 200) {
+
+                    var jsonObject = JSON.parse(httpRequest.responseText);
+                    if(jsonObject.length == 0) {
+                        alert("The response object is empty");
+                        return;
+                    }
+                    var _name = document.getElementById("name");
+                    var _article = document.getElementById("article");
+                    var _description = document.getElementById("description");
+                    _name.value = jsonObject._name;
+                    _article.value = jsonObject._article;
+                    _description.value = jsonObject._description;
+
+                    alert("Sound pack " + document.getElementById("name").value + " success loaded");
+                }
+            }
+        }
+    }
+
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
+    getGuitarPackage();
+
+</script>
+
+
+</body>
+</html>

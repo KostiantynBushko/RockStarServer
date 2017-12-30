@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Create new package</title>
+</head>
+<body>
+
+
+<div id="new_package" style="margin: 10% 35%; width: 30%; text-align: left;">
+
+    <h2 style="color: #000000; background-color: #0fbbf0; text-align: center">Create new package</h2><br>
+    <input id="name" style="width: 96%; margin-top: 2px; margin-left: 1%" type="text" name="name" placeholder="Name"><br><br>
+
+    <div style="display: block" id="next">
+        <button onclick="nextButtonClick()" style="width: 50%; margin-top: 2px; margin-left: 1%">Next</button>
+    </div>
+
+    <div id="detail" style="display: none">
+        <p>
+            <input id="article" style="width: 96%; margin-top: 5px; margin-left: 1%" type="text" name="article" placeholder="article"><br>
+            <textarea id="description" rows="5" style="width: 96%; margin-top: 5px; margin-left: 1%"></textarea><br><br>
+
+            <button onclick="Create()" style="width: 98%; margin-left: 1%">Create sound package</button>
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    function toggle_visibility(id) {
+        var e = document.getElementById(id);
+        if(e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+    }
+
+    function nextButtonClick() {
+        var name = document.getElementById('name');
+        var httpRequest = new XMLHttpRequest();
+        if(name.value != '') {
+            httpRequest.open("POST","/get_sound_pack_by_name", true);
+            httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            httpRequest.send("name=" + name.value);
+            httpRequest.onreadystatechange = function() {
+                if(httpRequest.readyState == 4) {
+                    if(httpRequest.status == 200) {
+                        alert("Warning: " + name.value +" already exist");
+                    } else if(httpRequest.status == 204) {
+                        toggle_visibility('detail');
+                        toggle_visibility('next');
+                        name.readOnly = true;
+                    }
+                }
+            }
+        } else {
+            alert("Please complete name filed");
+        }
+    }
+
+    function Create() {
+
+        var article = document.getElementById('article');
+        var description = document.getElementById('description');
+
+        if(article.value == '' || description.value == '') {
+            alert("Error : Complete all fields");
+            return;
+        }else {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open("POST", "/create_sound_pack",true);
+            httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            httpRequest.send("article=" + document.getElementById('article').value);
+
+            httpRequest.onreadystatechange = function() {
+                if(httpRequest.readyState == 4) {
+                    alert(httpRequest.responseText);
+                }
+            }
+        }
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Sound pack list</title>
+    <style>
+        td {
+            border: 1px solid #646464;
+        }
+        table {
+            width: 100%;
+        }
+        th {
+            background-color: #a3a3a3;
+        }
+        textarea {
+            width:50%;
+        }
+    </style>
+</head>
+
+<body>
+
+<select id="statusId" onchange="loadSoundPackages()">
+    <option value="0">all</option>
+    <option value="1">none</option>
+    <option value="2">disable</option>
+    <option value="3">enable</option>
+</select>
+
+<button type="button" onclick="loadSoundPackages()">Sound package</button>
+
+<table class="table" id="tableSoundPacks">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>ARTICLE</th>
+        <th>PURCHASE ID</th>
+        <th>STATUS</th>
+        <th>EDIT</th>
+    </tr>
+    </thead>
+</table>
+
+<script type="text/javascript">
+
+    function loadSoundPackages() {
+        var params = 'fromId=1&status_id=' + document.getElementById('statusId').value;
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open('POST','/get_sound_packs',true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpRequest.send(params);
+
+        httpRequest.onreadystatechange = function() {
+            if(httpRequest.readyState == 4) {
+                if(httpRequest.status == 200) {
+                    var jsonObject = JSON.parse(httpRequest.responseText);
+                    if(jsonObject.length == 0) {
+                        alert("Empty response!!!");
+                        return;
+                    }
+
+                    var table = document.getElementById("tableSoundPacks");
+                    while(table.rows.length > 1) {
+                        table.deleteRow(1);
+                    }
+                    for(var i = 0; i < jsonObject.length; i++) {
+                        var row = table.insertRow(table.rows.length);
+                        var cell0 = row.insertCell(0);
+                        var cell1 = row.insertCell(1);
+                        var cell2 = row.insertCell(2);
+                        var cell3 = row.insertCell(3);
+                        var cell4 = row.insertCell(4);
+                        var cell5 = row.insertCell(5);
+                        cell0.innerHTML = jsonObject[i]._id;
+                        cell1.innerHTML = jsonObject[i]._name;
+                        cell2.innerHTML = jsonObject[i]._article;
+                        cell3.innerHTML = jsonObject[i]._purchase_id;
+                        cell4.innerHTML = jsonObject[i]._status;
+                        var link = 'http://rockstar-onquantum.rhcloud.com/sound_package?name=' + jsonObject[i]._name;
+                        cell5.innerHTML = "<a href=" + link + ">edit</a>";
+                    }
+                }
+            }
+        }
+    }
+
+    loadSoundPackages();
+</script>
+
+</body>
+</html>
