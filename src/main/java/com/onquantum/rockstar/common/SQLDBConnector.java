@@ -13,10 +13,11 @@ import java.util.Properties;
  * Created by Admin on 10/21/14.
  */
 public class SQLDBConnector {
+
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String JDBC_URL = "jdbc:mysql://127.10.123.130:3306/rockstar";
-    private static final String JDBC_USER = "adminj64EzNj";
-    private static final String JDBC_PASSWORD = "5gnY6PJUMNUM";
+    private static final String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/rockstar";
+    private static final String JDBC_USER = "root";
+    private static final String JDBC_PASSWORD = "root";
     private static final String CHARACTER_ENCODING = "cp1251";
     private static final String UNICODE = "true";
 
