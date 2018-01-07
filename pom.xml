@@ -6,19 +6,28 @@
   <packaging>war</packaging>
   <version>1.0</version>
   <name>rockstar</name>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>org.jboss.spec</groupId>
-      <artifactId>jboss-javaee-6.0</artifactId>
-      <version>1.0.0.Final</version>
-      <type>pom</type>
-      <scope>provided</scope>
-    </dependency>
+
+    <!--<dependency>-->
+      <!--<groupId>org.jboss.spec</groupId>-->
+      <!--<artifactId>jboss-javaee-6.0</artifactId>-->
+      <!--<version>1.0.0.Final</version>-->
+      <!--<type>pom</type>-->
+      <!--<scope>provided</scope>-->
+    <!--</dependency>-->
+
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>javax.servlet-api</artifactId>
+          <version>3.0.1</version>
+          <scope>provided</scope>
+      </dependency>
 
       <dependency>
           <groupId>org.json</groupId>
